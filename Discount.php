@@ -79,7 +79,6 @@
             $keyLKM = array_keys($helperForLKM['intersect'])[0];
             $keyA = array_keys($helperForA['intersect'])[0];
             if (!isset($this->goods[$keyA]['discount_price']) && !isset($this->goods[$keyLKM]['discount_price']) && 1 === $helperForLKM['count'] && 1 == $helperForA['count']) {
-                echo 'd';
                 $sumPersentage = $this->price_persentage($helperForLKM['intersect'], $persentage);
                 $this->goods[$keyLKM]['discount_price'] = $this->goods[$keyLKM]['price'] - $sumPersentage;
             }
