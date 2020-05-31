@@ -21,7 +21,7 @@
         }
 
         //проверка структуры массива
-        protected function validateGoods()
+        private function validateGoods()
         {
             $isValidate = true;
             if (is_array($this->goods)) {
@@ -39,7 +39,7 @@
         }
 
         //cуммирование цен
-        protected function price_summ($rules)
+        private function priceSumm($rules)
         {
             $summ = 0;
             foreach ($this->goods as $key => $value) {
@@ -53,10 +53,9 @@
         }
 
         //процент от числа
-        protected function price_persentage($target, $persentage)
+        private function pricePersentage($target, $persentage)
         {
-            $sumOfPair = $this->price_summ($target);
-
+            $sumOfPair = $this->priceSumm($target);
             return $sumOfPair * ($persentage / 100);
         }
 
@@ -79,7 +78,7 @@
             $keyLKM = array_keys($helperForLKM['intersect'])[0];
             $keyA = array_keys($helperForA['intersect'])[0];
             if (!isset($this->goods[$keyA]['discount_price']) && !isset($this->goods[$keyLKM]['discount_price']) && 1 === $helperForLKM['count'] && 1 == $helperForA['count']) {
-                $sumPersentage = $this->price_persentage($helperForLKM['intersect'], $persentage);
+                $sumPersentage = $this->pricePersentage($helperForLKM['intersect'], $persentage);
                 $this->goods[$keyLKM]['discount_price'] = $this->goods[$keyLKM]['price'] - $sumPersentage;
             }
         }
@@ -90,7 +89,7 @@
             $helper = $this->getHelper($rules[1]);
             $countGoods = count($this->goods);
             if (0 == $helper['count'] && $countGoods == $rules[0]) {
-                $sumPersentage = $this->price_persentage($this->body, $persentage) / $countGoods;
+                $sumPersentage = $this->pricePersentage($this->body, $persentage) / $countGoods;
                 foreach ($this->goods as $key => $item) {
                     if (!isset($item['discount_price'])) { // если скидки нету
                         $goods[$key]['discount_price'] = $goods[$key]['price'] - $sumPersentage;
@@ -110,7 +109,7 @@
                     $uniqueIntersect = array_unique($intersect);
                     $arrUniqueLength = count($uniqueIntersect);
                     if ($arrUniqueLength > 1) {
-                        $sumPersentage = $this->price_persentage($uniqueIntersect, $persentage) / $arrUniqueLength;
+                        $sumPersentage = $this->pricePersentage($uniqueIntersect, $persentage) / $arrUniqueLength;
                         foreach ($uniqueIntersect as $key => $value) {
                             if (!isset($this->goods[$key]['discount_price'])) {
                                 $this->goods[$key]['discount_price'] = $this->goods[$key]['price'] - $sumPersentage;
